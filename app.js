@@ -6,8 +6,8 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
 const Sequelize = require("sequelize");
-const port = 3000;
 
+const port = 3000;
 const dbPath = path.resolve(__dirname, 'db.sqlite');
 
 const sequelize = new Sequelize('database', 'username', 'password', {
@@ -20,15 +20,47 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const Chat = require("./Models/Chat")(sequelize, Sequelize.DataTypes);
 Chat.sync();
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`);
 });
 
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
     console.log('User connected');
 
     socket.on('disconnect', () => {
         console.log('User disconnected');
+    });
+
+    socket.on('enter_room', (room) => {
+        socket.join(room);
+        console.log(socket.rooms);
+
+        Chat.findAll({
+            attributes: ['id', 'name', 'message', 'room', 'createdAt'],
+            where: {
+                room: room
+            }
+        }).then(list => {
+            socket.emit("init_messages", {messages: JSON.stringify(list)});
+        });
+    });
+
+    socket.on('leave_room', (room) => {
+        socket.leave(room);
+        console.log(socket.rooms);
+    });
+
+    socket.on('chat_message', (msg) => {
+        const message = Chat.create({
+            name: msg.name,
+            message: msg.message,
+            room: msg.room,
+            createdAt: msg.createdAt
+        }).then(() => {
+            io.in(msg.room).emit('received_message', msg);
+        }).catch(e => {
+            console.log(e);
+        });    
     });
 });
 
