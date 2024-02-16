@@ -5,13 +5,23 @@ app.use(express.static(path.join(__dirname, "public")));
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
-const port = 3000;
+const Sequelize = require("sequelize");
 
-app.get("/", (req, res) => {
+const port = 3000;
+const dbPath = path.resolve(__dirname, 'db.sqlite');
+
+const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'sqlite',
+    logging: false,
+    storage: dbPath
+});
+
+app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`);
 });
 
-io.on("connection", (socket) => {
+io.on('connection', (socket) => {
     console.log('User connected');
 
     socket.on('disconnect', () => {
