@@ -13,23 +13,28 @@ socket.on("connect", () => {
 window.onload = () => {
     document.querySelector("form").addEventListener("submit", (e) => {
         e.preventDefault();
-        const message = document.querySelector("#message");
+        const messageInput = document.querySelector("#message");
         const room = document.querySelector("#tabs li.active").dataset.room;
         const createdAt = new Date();
 
-        socket.emit("chat_message", {
-            name: username,
-            message: message.value,
-            room: room,
-            createdAt: createdAt
-        });
+        const messageValue = messageInput.value.trim();
+        if (messageValue !== "") {
+            socket.emit("chat_message", {
+                name: username,
+                message: messageValue,
+                room: room,
+                createdAt: createdAt
+            });
 
-        document.querySelector("#message").value = "";
+            document.querySelector("#message").value = "";
+        } else {
+            alert("message cant be empty.");
+        }
     });
 
     socket.on("received_message", (msg) => {
         sendMessages(msg);
-    })
+    });
 
     document.querySelectorAll("#tabs li").forEach(function(tab) {
         tab.addEventListener("click", function() {
@@ -49,7 +54,7 @@ window.onload = () => {
         if(data != []){
             data.forEach(data => {
                 sendMessages(data);
-            })
+            });
         }
     });
 
@@ -71,11 +76,11 @@ window.onload = () => {
             writing.innerHTML = "";
         }, 5000);
     });
-}
+};
 
 function sendMessages(msg){
     let created = new Date(msg.createdAt);
-    let texte = `<div><p>${msg.name} <small>${created.toLocaleDateString()}</small></p><p>${msg.message}</p></div>`
+    let texte = `<div><p>${msg.name} <small>${created.toLocaleDateString()}</small></p><p>${msg.message}</p></div>`;
 
     document.querySelector("#messages").innerHTML += texte;
 }
