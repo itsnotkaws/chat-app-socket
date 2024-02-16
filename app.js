@@ -62,6 +62,10 @@ io.on("connection", (socket) => {
             console.log(e);
         });    
     });
+
+    socket.on('typing', msg => {
+        socket.to(msg.room).emit('usertyping', msg);
+    })
 });
 
 server.listen(port, () => {
