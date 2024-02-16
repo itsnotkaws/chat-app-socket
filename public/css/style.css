@@ -1,5 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    font-family: "Fredoka", sans-serif;
+    background-color: #2e2f31;
+}
+
+aside {
+    flex: 1;
+}
+
+main {
+    flex: 4;
+}
+
+#tabs {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#tabs li {
+    padding: 10px;
+    color: #B8CBD0;
+    text-transform: lowercase;
+}
+
+#tabs li.active {
+    background-color: #344D59;
+    font-weight: bold;
+}
+
+#tabs li:not(.active) {
+    cursor: pointer;
+}
+
+#content {
+    height: 90vh;
+    position: relative;
+}
+
+#messages {
+    height: 100%;
+    background-color: #344D59;
+    overflow-y: scroll;
+}
+
+#writing {
+    position: absolute;
+    bottom: 0;
+    background-color: #344D59;
+    color: #B8CBD0;
+}
+
+#messages div {
+    margin: 0;
+    padding: 10px;
+    color: #B8CBD0;
+}
+
+form {
+    display: flex;
+}
+
+#name, #message {
+    padding: 10px;
+    background-color: #7A90A4;
+    color: white;
+    border: none;
+}
+
+#name::placeholder, #message::placeholder {
+    color: rgb(177, 171, 171);
+}
+
+#name {
+    flex: 1;
+}
+
+#message {
+    flex: 5;
+}
+
+button { 
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background-color: #839c49;
+    color: #B8CBD0;
 }

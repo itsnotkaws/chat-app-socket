@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ChatApp</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
+    <aside>
+        <ul id="tabs">
+            <li class="active" data-room="general"># Main</li>
+            <li data-room="help"># Help</li>
+            <li data-room="other"># Other</li>
+        </ul>
+    </aside>
+    <main>
+        <div id="content">
+            <div id="messages"></div>
+            <div id="writing"></div>
+        </div>
+        <form>
+            <input type="text" id="name" placeholder="Enter your username">
+            <input type="text" id="message" placeholder="Enter your message">
+            <button>Send</button>
+        </form>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
