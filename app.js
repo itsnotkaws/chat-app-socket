@@ -17,6 +17,9 @@ const sequelize = new Sequelize('database', 'username', 'password', {
     storage: dbPath
 });
 
+const Chat = require("./Models/Chat")(sequelize, Sequelize.DataTypes);
+Chat.sync();
+
 app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`);
 });
