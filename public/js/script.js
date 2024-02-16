@@ -1,20 +1,24 @@
 const socket = io();
+let username;
 
 socket.on("connect", () => {
-    socket.emit("enter_room", "general");
+    username = prompt("Enter your username:");
+    if (username) {
+        socket.emit("enter_room", "general", username);
+    } else {
+        alert("username cant be empty.");
+    }
 });
-
 
 window.onload = () => {
     document.querySelector("form").addEventListener("submit", (e) => {
         e.preventDefault();
-        const name = document.querySelector("#name")
         const message = document.querySelector("#message");
         const room = document.querySelector("#tabs li.active").dataset.room;
         const createdAt = new Date();
 
         socket.emit("chat_message", {
-            name: name.value,
+            name: username,
             message: message.value,
             room: room,
             createdAt: createdAt
@@ -50,11 +54,10 @@ window.onload = () => {
     });
 
     document.querySelector("#message").addEventListener("input", () => {
-        const name = document.querySelector("#name").value;
         const room = document.querySelector("#tabs li.active").dataset.room;
 
         socket.emit("typing", {
-            name: name,
+            name: username,
             room: room
         });
     });
