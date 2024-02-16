@@ -6,8 +6,8 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
 const Sequelize = require("sequelize");
-
 const port = 3000;
+
 const dbPath = path.resolve(__dirname, 'db.sqlite');
 
 const sequelize = new Sequelize('database', 'username', 'password', {
